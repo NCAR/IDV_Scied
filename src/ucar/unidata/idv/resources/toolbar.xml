@@ -6,14 +6,14 @@
    hspace="2"
    i:space="2"
    i:width="5">
-  <button action="action:show.dashboard"/>
+  <!--button action="action:show.dashboard"/>
   <button action="action:new.displaywindow"/>
   <filler/>
   <button action="action:bundle.open"/>
   <button action="action:bundle.save"/>
   <button action="action:bundle.favorite.save"/>
-  <button action="action:bundle.favorite.manage"/>
-  <filler/>
+  <button action="action:bundle.favorite.manage"/-->
+  <!--filler/>
   <button action="action:help.introduction"/>
   <button action="action:help.showsupportform"/>
   <filler/>
@@ -22,7 +22,7 @@
   <filler/>
   <button action="action:display.curvedrawer"/>
   <button action="action:display.backgroundimage"/>
-  <filler/>
-  <button action="action:idv.stopload"/>
-  <button action="action:exit"/>
+  <filler/-->
+  <!--button action="action:idv.stopload"/-->
+  <!--button action="action:exit"/-->
 </panel>

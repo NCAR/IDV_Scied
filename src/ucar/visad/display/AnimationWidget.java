@@ -400,7 +400,7 @@ public class AnimationWidget extends SharableImpl implements ActionListener {
         }
         return "/auxdata/ui/icons/" + name + (bigIcon
                 ? "24"
-                : "16") + ".gif";
+                : "16") + ".png";
     }
 
 
@@ -473,7 +473,7 @@ public class AnimationWidget extends SharableImpl implements ActionListener {
             { "Run/Stop", CMD_STARTSTOP, getIcon("Play") },
             { "One frame forward", CMD_FORWARD, getIcon("StepForward") },
             { "Go to last frame", CMD_END, getIcon("FastForward") },
-            { "Properties", CMD_PROPS, getIcon("Information") }
+          //  { "Properties", CMD_PROPS, getIcon("Information") }
         };
 
         for (int i = 0; i < buttonInfo.length; i++) {
@@ -486,7 +486,7 @@ public class AnimationWidget extends SharableImpl implements ActionListener {
             //            JComponent wrapper = GuiUtils.center(btn);
             //            wrapper.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
             btn.setBorder(
-                BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+                BorderFactory.createBevelBorder(0));
             buttonList.add(btn);
             //            buttonList.add(wrapper);
             if (i == 2) {

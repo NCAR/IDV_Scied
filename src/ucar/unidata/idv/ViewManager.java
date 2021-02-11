@@ -1111,13 +1111,13 @@ public class ViewManager extends SharableImpl implements ActionListener,
                                new Insets(0, 0, 0, 4));
         }
 
-        JPanel leftNav = GuiUtils.topCenter(GuiUtils.doLayout(toolbars, 1,
-                             GuiUtils.WT_N, GuiUtils.WT_N), null);
+        JPanel leftNav = GuiUtils.leftCenterRight(GuiUtils.doLayout(toolbars, 3,
+                             GuiUtils.WT_N, GuiUtils.WT_N), GuiUtils.filler(), topRight);
 
         // Component topBar = GuiUtils.leftCenterRight(GuiUtils.bottom(menuBar),
         topBar = GuiUtils.leftCenterRight(GuiUtils.bottom(menuBar),
                                           GuiUtils.bottom(nameLabel),
-                                          topRight);
+                                          null);
         centerPanel = GuiUtils.topCenter(topBar, contentsWrapper);
         topBar.setVisible(getTopBarVisible());
 
@@ -1185,10 +1185,10 @@ public class ViewManager extends SharableImpl implements ActionListener,
             centerPanelWrapper = GuiUtils.center(centerPanel);
         }
 
-        fullContents = GuiUtils.leftCenter(leftNav, centerPanelWrapper);
-        fullContents.setBorder(getContentsBorder());
-        fillLegends();
-        //setFullScreen();
+        //fullContents = GuiUtils.centerBottom(centerPanelWrapper, leftNav);
+        //fullContents.setBorder(getContentsBorder());
+        //fillLegends();
+        setFullScreen();
     }
 
     /**
@@ -3391,7 +3391,10 @@ public class ViewManager extends SharableImpl implements ActionListener,
      * @param d The default size
      */
     public void setSize(Dimension d) {
+
         defaultSize = d;
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //defaultSize = new Dimension(1920,1080);
     }
 
     /**
@@ -7061,7 +7064,8 @@ public class ViewManager extends SharableImpl implements ActionListener,
         if ((fullScreenWindow == null) || (innerContents == null)) {
             return;
         }
-
+/*
+// sharon commented this out to prevent esc key from closing down the screen
         Runnable runnable = new Runnable() {
             public void run() {
 
@@ -7086,6 +7090,8 @@ public class ViewManager extends SharableImpl implements ActionListener,
 
         // GuiUtils.invokeInSwingThread(runnable);
         SwingUtilities.invokeLater(runnable);
+
+ */
     }
 
     /**
@@ -7093,7 +7099,6 @@ public class ViewManager extends SharableImpl implements ActionListener,
      */
     public void setFullScreen() {
         Dimension fixedSize = null;
-
         if ((fullScreenWidth > 0) && (fullScreenHeight > 0)) {
             fixedSize = new Dimension(fullScreenWidth, fullScreenHeight);
         }
@@ -7109,15 +7114,19 @@ public class ViewManager extends SharableImpl implements ActionListener,
         }
 
         JComponent navComponent = getComponent();
-
-        innerContents.remove(navComponent);
+        // sharon commented out to see if it affected anything
+        //innerContents.remove(navComponent);
 
         Dimension theSize = fixedSize;
 
         if (theSize == null) {
             theSize        = Toolkit.getDefaultToolkit().getScreenSize();
-            theSize.height -= 50;
+            //theSize.height -= 50;
+            //theSize.height -= 100;
+            theSize.height -= 200;
+            theSize.width -= 400;
         }
+        System.out.println(theSize);
 
         navComponent.setMinimumSize(theSize);
         navComponent.setPreferredSize(theSize);
@@ -7139,17 +7148,144 @@ public class ViewManager extends SharableImpl implements ActionListener,
 
         // If they set the width to be smallish then don't include the
         // animation and the menu bar
+
         if (theSize.width < 300) {
             rightPanel = new JPanel();
             menuBar    = new JPanel();
         }
 
-        JPanel top =
-            GuiUtils.leftRight(GuiUtils.hbox(GuiUtils.bottom(cancelBtn1),
-                                             menuBar), rightPanel);
+        //JPanel top =
+        //    GuiUtils.leftRight(GuiUtils.hbox(GuiUtils.bottom(cancelBtn1),
+        //                                     menuBar), rightPanel);
+        JPanel playcontrol = GuiUtils.center( rightPanel);
+        // sharon note - this is not used
         JPanel bottom = GuiUtils.left(GuiUtils.hbox(cancelBtn2,
                             new JLabel(" ")));
-        JPanel contents = GuiUtils.topCenterBottom(top, navComponent, bottom);
+
+        // sharon add test for info box
+        JPanel infoPanel1 = new JPanel();
+        JLabel label1 = new JLabel();
+        String str1 = "<h1>Current precipitation</h1><h2>Radar</h2><p>The radar view shows where there is rain, hail, snow, or other precipitation, and how heavily that precipitation is falling. On this map you will see precipitation in a range of colors. The legend for these colors, also called a color ramp, is at the bottom of this tab. Blue and green represent light rain or snow; orange and yellow indicate heavy precipitation; and red, magenta, or purple, and sometimes white, mean severe rain and hail. </p>";
+        String html1 = "<html><body style='padding:10px;width: %1spx'>%1s";
+        label1.setText(String.format(html1, 300, str1));
+        label1.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+        label1.setForeground(new Color(0x000000));
+        infoPanel1.add(label1);
+
+        JPanel infoPanelImg1 = new JPanel();
+        JLabel imgReflectlabel=new JLabel();
+        imgReflectlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auxdata/ui/icons/reflect.png")));
+        infoPanelImg1.add(imgReflectlabel);
+
+        JPanel infoPanelKey1 = new JPanel();
+        JLabel imgReflectKeylabel=new JLabel();
+        imgReflectKeylabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auxdata/ui/icons/idv_reflect.png")));
+        infoPanelKey1.add(imgReflectKeylabel);
+
+        JPanel curReflectBar = GuiUtils.topCenterBottom(infoPanel1,infoPanelImg1,infoPanelKey1);
+
+
+        JPanel infoPanel2 = new JPanel();
+        JLabel label2 = new JLabel();
+        String str2 = "<h1>Future precipitation</h1><h2>Model Output</h2><p>In addition to the radar view of current precipitation, we can also see what computer models predict in terms of the amount and location of precipitation in the future. Like radar, this view uses a range of colors to indicate how light or heavy the precipitation, including rain and snow, will be. Unlike the radar view, the model forecast shows the precipitation with edges that are smoother because the forecast is more general than the actual current measurements we see with the radar.</p>";
+        String html2 = "<html><body style='padding:10px;width: %1spx'>%1s";
+        label2.setText(String.format(html2, 300, str2));
+        label2.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+        label2.setForeground(new Color(0x000000));
+        infoPanel2.add(label2);
+
+        JPanel infoPanelImg2 = new JPanel();
+        JLabel imgPreciplabel=new JLabel();
+        imgPreciplabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auxdata/ui/icons/precip.png")));
+        infoPanelImg2.add(imgPreciplabel);
+
+        JPanel infoPanelKey2 = new JPanel();
+        JLabel imgPrecipKeylabel=new JLabel();
+        imgPrecipKeylabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auxdata/ui/icons/idv_precip.png")));
+        infoPanelKey2.add(imgPrecipKeylabel);
+
+        JPanel curPrecipBar = GuiUtils.topCenterBottom(infoPanel2,infoPanelImg2,infoPanelKey2);
+
+        JPanel infoPanel3 = new JPanel();
+        JLabel label3 = new JLabel();
+        String str3 = "<h1>Temperature</h1><p>The temperature view shows current temperatures in degrees Fahrenheit (&deg;F). The colors represent specific temperatures, with a difference of two degrees between each color. The lines that mark the edges of each color are called isotherms, which are lines of equal temperature. The legend at the bottom of this tab shows what each color represents.</p>";
+        String html3 = "<html><body style='padding:10px;width: %1spx'>%1s";
+        label3.setText(String.format(html3, 300, str3));
+        label3.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+        label3.setForeground(new Color(0x000000));
+        infoPanel3.add(label3);
+
+        JPanel infoPanelImg3 = new JPanel();
+        JLabel imgTemplabel=new JLabel();
+        imgTemplabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auxdata/ui/icons/temp.png")));
+        infoPanelImg3.add(imgTemplabel);
+
+        JPanel infoPanelKey3 = new JPanel();
+        JLabel imgTempKeylabel=new JLabel();
+        imgTempKeylabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auxdata/ui/icons/idv_temp.png")));
+        infoPanelKey3.add(imgTempKeylabel);
+
+        JPanel curTempBar = GuiUtils.topCenterBottom(infoPanel3,infoPanelImg3, infoPanelKey3);
+
+        JPanel infoPanel4 = new JPanel();
+        JLabel label4 = new JLabel();
+        String str4 = "<h1>Wind Speed</h1><p>The arrows on this map represent wind speed and direction. The bigger the arrow, the stronger the wind. The arrow points in the direction the wind is going, and the tail shows where it is coming from. On this map you can see patterns in the current winds as air moves across the planet in different weather systems.</p>";
+        String html4 = "<html><body style='padding:10px;width: %1spx'>%1s";
+        label4.setText(String.format(html4, 300, str4));
+        label4.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+        label4.setForeground(new Color(0x000000));
+        infoPanel4.add(label4);
+
+        JPanel infoPanelImg4 = new JPanel();
+        JLabel imgWindlabel=new JLabel();
+        imgWindlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auxdata/ui/icons/wind.png")));
+        infoPanelImg4.add(imgWindlabel);
+
+        JPanel infoPanelKey4 = new JPanel();
+        JLabel imgWindKeylabel=new JLabel();
+        infoPanelKey4.add(imgWindKeylabel);
+
+        JPanel curWindBar = GuiUtils.topCenterBottom(infoPanel4,infoPanelImg4,infoPanelKey4);
+
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM,JTabbedPane.WRAP_TAB_LAYOUT);
+
+        tabbedPane.addTab("Current precipitation", curReflectBar);
+        tabbedPane.addTab("Future precipitation", curPrecipBar);
+        tabbedPane.addTab("Temperature         ", curTempBar);
+        tabbedPane.addTab("Wind Speed           ", curWindBar);
+
+        tabbedPane.setBackgroundAt(0,Color.CYAN);
+        tabbedPane.setBackgroundAt(1,Color.CYAN);
+        tabbedPane.setBackgroundAt(2,Color.CYAN);
+        tabbedPane.setBackgroundAt(3,Color.CYAN);
+
+        JPanel infoPanel5 = new JPanel();
+        JLabel imglabel=new JLabel();
+        imglabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auxdata/ui/icons/qr.png")));
+        infoPanel5.add(imglabel);
+        JLabel qrLabel = new JLabel();
+        String strqr = "<p>Scan this QR code with your phone to learn more</p>";
+        String htmlqr = "<html><body style='padding:10px;width: %1spx'>%1s";
+        qrLabel.setText(String.format(htmlqr, 100, strqr));
+        qrLabel.setFont(new Font("Sans Serif", Font.PLAIN, 14));
+        infoPanel5.add(qrLabel);
+
+        JPanel sidebar = GuiUtils.centerBottom(tabbedPane,infoPanel5);
+
+        JPanel middle = GuiUtils.centerRight(navComponent,sidebar);
+
+        // sharon add
+        checkToolBarVisibility();
+        JPanel bottomNav = GuiUtils.leftCenterRight(GuiUtils.doLayout(toolbars, 3,
+                GuiUtils.WT_N, GuiUtils.WT_N), GuiUtils.filler(), playcontrol);
+
+
+
+        //JPanel contents = GuiUtils.topCenterBottom(top, navComponent, bottom);
+        // sharon note - this is the navigation and the play buttons
+        JPanel contents = GuiUtils.centerBottom(middle, bottomNav);
+        Border padding = BorderFactory.createEmptyBorder(20,20,20,20);
+        bottomNav.setBorder(padding);
 
         fullScreenWindow = new JFrame();
 
@@ -7157,25 +7293,30 @@ public class ViewManager extends SharableImpl implements ActionListener,
             fullScreenWindow.setUndecorated(true);
         }
 
-        fullScreenWindow.getContentPane().add(contents);
+
 
         if (fixedSize == null) {
-            fullScreenWindow.setSize(
-                Toolkit.getDefaultToolkit().getScreenSize());
+            Dimension fullSize = Toolkit.getDefaultToolkit().getScreenSize();
+            fullScreenWindow.setSize(fullSize.width, fullSize.height);
         } else {}
 
-        fullScreenWindow.pack();
+        fullScreenWindow.getContentPane().add(contents);
+        // Sharon added
+        fullScreenWindow.setResizable(false);
+        fullScreenWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        // need to look into adjusting the other part's sizes before enabling this again
+        //fullScreenWindow.pack();
         int yOffset = 0;
 
         if (GuiUtils.isMac()) {
-            yOffset = 23;
+            yOffset = 0;
         }
 
         if (fixedSize == null) {
             fullScreenWindow.setLocation(0, 0 + yOffset);
         } else {
-            fullScreenWindow.setLocation(20, 20 + yOffset);
+            fullScreenWindow.setLocation(0, 0 + yOffset);
         }
 
         fullScreenWindow.setVisible(true);

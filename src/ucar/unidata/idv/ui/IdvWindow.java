@@ -172,7 +172,7 @@ public class IdvWindow extends MultiFrame {
         // if macosx, try to add the OSX full screen mode widget
         if ((GuiUtils.isMac())
                 && (theIdv.getProperty("mac.fullscreen.enable",
-                                       Boolean.FALSE))) {
+                Boolean.FALSE))) {
             enableFullScreenMode(this.getWindow());
         }
 
@@ -187,12 +187,11 @@ public class IdvWindow extends MultiFrame {
 
         final WindowAdapter[] wa = { null };
         addWindowListener(wa[0] = new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                if (doClose()) {
-                    removeWindowListener(wa[0]);
-                    lastActiveWindow = null;
-                }
+
+            public void windowIconified(WindowEvent we) {
+                IdvWindow.super.getFrame().setState(JFrame.NORMAL);
             }
+
             public void windowActivated(WindowEvent e) {
                 lastActiveWindow = IdvWindow.this;
             }
@@ -204,7 +203,10 @@ public class IdvWindow extends MultiFrame {
         }
         setLocation(lastX, lastY);
         lastX += 50;
+        IdvWindow.super.getFrame().setResizable(false);
+        IdvWindow.super.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         //        lastY += 50;
+
     }
 
 
