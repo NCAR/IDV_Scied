@@ -7126,7 +7126,6 @@ public class ViewManager extends SharableImpl implements ActionListener,
             theSize.height -= 200;
             theSize.width -= 400;
         }
-        System.out.println(theSize);
 
         navComponent.setMinimumSize(theSize);
         navComponent.setPreferredSize(theSize);
@@ -7168,7 +7167,7 @@ public class ViewManager extends SharableImpl implements ActionListener,
         String str1 = "<h1>Current precipitation</h1><h2>Radar</h2><p>The radar view shows where there is rain, hail, snow, or other precipitation, and how heavily that precipitation is falling. On this map you will see precipitation in a range of colors. The legend for these colors, also called a color ramp, is at the bottom of this tab. Blue and green represent light rain or snow; orange and yellow indicate heavy precipitation; and red, magenta, or purple, and sometimes white, mean severe rain and hail. </p>";
         String html1 = "<html><body style='padding:10px;width: %1spx'>%1s";
         label1.setText(String.format(html1, 300, str1));
-        label1.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+        label1.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         label1.setForeground(new Color(0x000000));
         infoPanel1.add(label1);
 
@@ -7190,7 +7189,7 @@ public class ViewManager extends SharableImpl implements ActionListener,
         String str2 = "<h1>Future precipitation</h1><h2>Model Output</h2><p>In addition to the radar view of current precipitation, we can also see what computer models predict in terms of the amount and location of precipitation in the future. Like radar, this view uses a range of colors to indicate how light or heavy the precipitation, including rain and snow, will be. Unlike the radar view, the model forecast shows the precipitation with edges that are smoother because the forecast is more general than the actual current measurements we see with the radar.</p>";
         String html2 = "<html><body style='padding:10px;width: %1spx'>%1s";
         label2.setText(String.format(html2, 300, str2));
-        label2.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+        label2.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         label2.setForeground(new Color(0x000000));
         infoPanel2.add(label2);
 
@@ -7211,7 +7210,7 @@ public class ViewManager extends SharableImpl implements ActionListener,
         String str3 = "<h1>Temperature</h1><p>The temperature view shows current temperatures in degrees Fahrenheit (&deg;F). The colors represent specific temperatures, with a difference of two degrees between each color. The lines that mark the edges of each color are called isotherms, which are lines of equal temperature. The legend at the bottom of this tab shows what each color represents.</p>";
         String html3 = "<html><body style='padding:10px;width: %1spx'>%1s";
         label3.setText(String.format(html3, 300, str3));
-        label3.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+        label3.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         label3.setForeground(new Color(0x000000));
         infoPanel3.add(label3);
 
@@ -7232,7 +7231,7 @@ public class ViewManager extends SharableImpl implements ActionListener,
         String str4 = "<h1>Wind Speed</h1><p>The arrows on this map represent wind speed and direction. The bigger the arrow, the stronger the wind. The arrow points in the direction the wind is going, and the tail shows where it is coming from. On this map you can see patterns in the current winds as air moves across the planet in different weather systems.</p>";
         String html4 = "<html><body style='padding:10px;width: %1spx'>%1s";
         label4.setText(String.format(html4, 300, str4));
-        label4.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+        label4.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         label4.setForeground(new Color(0x000000));
         infoPanel4.add(label4);
 
@@ -7248,16 +7247,14 @@ public class ViewManager extends SharableImpl implements ActionListener,
         JPanel curWindBar = GuiUtils.topCenterBottom(infoPanel4,infoPanelImg4,infoPanelKey4);
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM,JTabbedPane.WRAP_TAB_LAYOUT);
+        Font font = new Font("Sans Serif", Font.CENTER_BASELINE,14);
+        tabbedPane.setFont(font);
 
         tabbedPane.addTab("Current precipitation", curReflectBar);
         tabbedPane.addTab("Future precipitation", curPrecipBar);
         tabbedPane.addTab("Temperature         ", curTempBar);
         tabbedPane.addTab("Wind Speed           ", curWindBar);
 
-        tabbedPane.setBackgroundAt(0,Color.CYAN);
-        tabbedPane.setBackgroundAt(1,Color.CYAN);
-        tabbedPane.setBackgroundAt(2,Color.CYAN);
-        tabbedPane.setBackgroundAt(3,Color.CYAN);
 
         JPanel infoPanel5 = new JPanel();
         JLabel imglabel=new JLabel();

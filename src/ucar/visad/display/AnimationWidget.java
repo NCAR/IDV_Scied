@@ -259,7 +259,7 @@ public class AnimationWidget extends SharableImpl implements ActionListener {
         };
         timesCbx.setToolTipText("");
         timesCbxMutex = timesCbx.getTreeLock();
-        timesCbx.setFont(new Font("Dialog", Font.PLAIN, 9));
+        timesCbx.setFont(new Font("Dialog", Font.PLAIN, 14));
         timesCbx.setLightWeightPopupEnabled(false);
         // set to non-visible until items are added
         timesCbx.setVisible(false);
