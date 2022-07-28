@@ -2226,7 +2226,10 @@ public class GeoGridDataSource extends GridDataSource {
             CalendarDateTime t1 =
                 new CalendarDateTime((DateTime) times.get(times.size() - 1));
             CalendarDate dt1 = t1.getCalendarDate();
+            if(dt1.getMillis()  >= dt0.getMillis())
             dateRange = CalendarDateRange.of(dt0, dt1);
+            else
+                dateRange = CalendarDateRange.of(dt1, dt0);
         } else {
             dateRange = null;
         }
@@ -2272,7 +2275,7 @@ public class GeoGridDataSource extends GridDataSource {
         int finalIndex0 = index;
         if(bounds != null && bounds[1] != bounds[0]) {
             double min = bounds[1] - bounds[0];
-            for (int ii = index; ii <= lastindex; ii++) {
+            for (int ii = index+1; ii <= lastindex; ii++) {
                 bounds = cca.getCoordBounds(ii);
                 double tmp = bounds[1] - bounds[0];
                 if(tmp < min)

@@ -1481,7 +1481,7 @@ public class GeoGridAdapter {
 
             java.util.Set keySet = gridMap.keySet();
             if (gridMap.size() > 0) {
-                SampledSet domain = (gridMap.size() == 1)
+                 /* SampledSet domain = (gridMap.size() == 1)
                                     ? (SampledSet) new SingletonSet(
                                         new RealTuple(
                                             new Real[] {
@@ -1489,6 +1489,10 @@ public class GeoGridAdapter {
                                                     .firstKey() }))
                                     : (SampledSet) CalendarDateTime.makeTimeSet(
                                         (CalendarDateTime[]) keySet.toArray(
+                                new CalendarDateTime[keySet.size()])); */
+                /* the problem with singletonSet is that it fail to pass the calender info for the later */
+                SampledSet domain =  (SampledSet) CalendarDateTime.makeTimeSet(
+                        (CalendarDateTime[]) keySet.toArray(
                                             new CalendarDateTime[keySet.size()]));
                 int i = 0;
 
